@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUser } from "../redux/userSlice"
+import { useHistory } from 'react-router-dom'
+import Signup from './Signup'
 
-function Login({ currentUser }) {
+export default function Login() {
     const dispatch = useDispatch()
+    const history = useHistory()
     const [formLogin, setFormLogin] = useState({
         email: "",
         password: ""
@@ -30,14 +33,14 @@ function Login({ currentUser }) {
                 email: "",
                 password: ""
             })
+            history.push("/")
         })
 
     }
 
     return (
-        <>
-            { currentUser ? <h1> Hello {currentUser.name} </h1> :
-            <form onSubmit={handleLogin}>
+        <div className="login-form">
+        <form onSubmit={handleLogin}>
             <label>Email</label>
             <input
               className="login-form-1"
@@ -59,9 +62,10 @@ function Login({ currentUser }) {
             <br/>
             <button type="submit">Login</button>
           </form>
-        }
-        </>
+
+          <Signup/>
+        </div>
+
+        
     )
 }
-
-export default Login
