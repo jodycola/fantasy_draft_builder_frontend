@@ -1,1 +1,152 @@
+/************* ROOT ***********************/
+:root {
 
+    --input-color: #99A3BA;
+    --input-border: #CDD9ED;
+    --input-background: #fff;
+    --input-placeholder: #CBD1DC;
+
+    --input-border-focus: #275EFE;
+
+    --group-color: var(--input-color);
+    --group-border: var(--input-border);
+    --group-background: #EEF4FF;
+
+    --group-color-focus: #fff;
+    --group-border-focus: var(--input-border-focus);
+    --group-background-focus: #678EFE;
+
+}
+
+/************* MAIN **********************/
+body {
+}
+
+/*************** NAVBAR ******************/
+
+
+/************* LOGIN/SIGNUP *************/
+.login {
+    display: flex;
+    width: 1000px;
+    height: calc(100% - 20px);
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    justify-content: space-between;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.left {
+    width: 400px;
+    padding: 55px;
+    flex-direction: column;
+    display: flex;
+    border-radius: 10px;
+}
+
+.right {
+    width: 400px;
+    padding: 55px;
+    flex-direction: column;
+    display: flex;
+    border-radius: 10px;
+}
+
+/* Login Forms  */
+
+.login-group {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: 8px;
+}
+
+.login-field {
+    display: block;
+    width: 100%;
+    padding: 4px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
+    background: var(--input-background);
+    transition: border .3s ease;
+    &::placeholder {
+        color: var(--input-placeholder);
+    }
+    &:focus {
+        outline: none;
+        border-color: var(--input-border-focus);
+    }
+}
+
+.login-btn {
+    display: block;
+    width: 100%;
+    padding: 4px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
+    background: var(--input-background);
+    transition: border .3s ease;
+}
+
+/* Signup Forms  */
+
+.signup-group {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: 8px;
+}
+
+.signup-field {
+    display: block;
+    width: 100%;
+    padding: 4px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
+    background: var(--input-background);
+    transition: border .3s ease;
+    &::placeholder {
+        color: var(--input-placeholder);
+    }
+    &:focus {
+        outline: none;
+        border-color: var(--input-border-focus);
+    }
+}
+
+.signup-btn {
+    display: block;
+    width: 100%;
+    padding: 4px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
+    background: var(--input-background);
+    transition: border .3s ease;
+}
