@@ -10,13 +10,10 @@ export default function MyPlayer({ reference, removeFromTeam }) {
         .then(playerData => setPlayer(playerData))
     }, [reference.player_id])
 
-    function viewPlayer(){
-        console.log(player)
-    }
-
     return (
-        <div>
-            {player.first_name} {player.last_name} <Button onClick={() => removeFromTeam(player)}> - </Button> <Button onClick={viewPlayer}> o </Button>
+        <div className="player-list">
+            <Button variant="danger" onClick={() => removeFromTeam(player)}> x </Button> {player.first_name} {player.last_name} 
+            <hr/>
         </div>
     )
 }

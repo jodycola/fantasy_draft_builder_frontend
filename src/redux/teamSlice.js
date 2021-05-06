@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const teamSlice = createSlice({
     name: "team",
-    initialState: {},
+    initialState: [],
     reducers: {
         selectTeam(state, action){
             return action.payload
@@ -11,11 +11,12 @@ const teamSlice = createSlice({
             return null
         },
         removePlayer(state, action){
-            state = action.payload.team.contracts
-            return state = state.filter( contract => contract.id !== action.payload.id )
-        },
+            return [
+                ...state.filter( contract => contract.id !== action.payload.id )
+            ]
+        }
     },
 })
 
-export const { selectTeam, removeTeam, removePlayer} = teamSlice.actions
+export const { selectTeam, removeTeam, removePlayer, addPlayer} = teamSlice.actions
 export default teamSlice.reducer

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import TeamCard from './TeamCard'
-import { Button, Card, CardGroup, Form, Modal } from 'react-bootstrap'
+import { Button, CardGroup, Form, Modal } from 'react-bootstrap'
 
 export default function Team() {
     const dispatch = useDispatch()
@@ -43,12 +43,11 @@ export default function Team() {
 
     return (
         <div>
-            <h1> {currentUser.name} </h1>
-            <CardGroup style={{ display: "flex", flexWrap: "wrap", border: "1px solid black" }}>
+            <h1 style={{color: "white"}}> {currentUser.name}'s Teams </h1> <Button variant="success" onClick={() => setShowCreate(!showCreate)}> Create a new team </Button>
+            <CardGroup style={{ display: "flex", flexWrap: "wrap"}}>
+
                 {showTeams}
-                <Card onClick={() => setShowCreate(!showCreate)} style={{ maxHeight: '18rem', maxWidth: '18rem', flex: "1" }}>
-                    <Card.Img style={{height: '18rem', width: '18rem'}}src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=6&m=688550958&s=612x612&w=0&h=nVa-a5Fb79Dgmqk3F00kop9kF4CXFpF4kh7vr91ERGk="/>
-                </Card>
+
             </CardGroup>
 
             <Modal show={showCreate} backdrop="static">

@@ -9,11 +9,9 @@ export default function Login() {
     const history = useHistory()
 
     const [formToggle, setFormToggle] = useState(false)
+    const [formSignupToggle, setFormSignupToggle] = useState(false)
 
-    const [formLogin, setFormLogin] = useState({
-        email: "",
-        password: ""
-    })
+    const [formLogin, setFormLogin] = useState({ email: "", password: ""})
 
     const [formSignup, setFormSignup] = useState({ name: "", email: "", password: "", password_verify: "" })
 
@@ -48,8 +46,15 @@ export default function Login() {
 
     }
 
-    function handleShow(){
+    function showLogin(){
+        setFormSignupToggle(false)
         setFormToggle(!formToggle)
+
+    }
+
+    function showSignup(){
+        setFormToggle(false)
+        setFormSignupToggle(!formSignupToggle)
     }
 
 // Button handler for signup
@@ -81,7 +86,7 @@ export default function Login() {
     <div className="login">
         <div className="left">
         <h3> Log in to your account </h3>
-        <Button onClick={handleShow}> Log in with email </Button> 
+        <Button onClick={showLogin}> Log in with email </Button> 
         { !formToggle ?  null :
         <center>
         <form onSubmit={handleLogin}>
@@ -115,12 +120,14 @@ export default function Login() {
 
             <div className="divide">
                 <hr/>
-                <center> <span> Or </span> </center>
+                <center> <span> ━━━━━━ Or ━━━━━━ </span> </center>
                 <hr/>
             </div>
 
         <hr/>
             <p> Don't have an account? Get started today </p>
+            <Button onClick={showSignup}> Register a new account </Button> 
+            { !formSignupToggle ?  null :
             <center>
             <form onSubmit={handleSubmit}>
                 <div className="signup-group">
@@ -174,11 +181,12 @@ export default function Login() {
                 <Button className="signup-btn" type="submit"> Sign up now </Button>
             </form>
             </center>
+            }
         </div>
 
         <div className="right">
-            <img src='https://png.vector.me/files/images/2/5/250513/basketball_net_preview' alt='basketball-hoop'/>
-            <h2 style={{textAlign: "center"}}>Fantasy All-Stars</h2>
+            <img style={{webkitFilter: "invert(1)", filter: "invert(1)"}} src='https://png.vector.me/files/images/2/5/250513/basketball_net_preview' alt='basketball-hoop'/>
+            <h2 style={{fontSize: "50px", textAlign: "center"}}>Fantasy All-Stars</h2>
         </div>
     </div>
 

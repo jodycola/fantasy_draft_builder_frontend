@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { selectTeam, removePlayer } from "../redux/teamSlice"
 import MyPlayer from './MyPlayer'
@@ -9,16 +8,47 @@ import { Button, Card, Modal } from 'react-bootstrap'
 export default function TeamCard({ team, contracts, myTeams, setMyTeams }) {
     const dispatch = useDispatch()
 
+    const [roster, setRoster] = useState([])
+
+    const [points, setPoints] = useState(0)
+
     const [confirmation, setConfirmation] = useState(false)
     const [finder, setFinder] = useState(false)
 
-    const displayRoster = contracts.map(player => { 
+    let yesterday = new Date()
+    let year = String(yesterday.getFullYear())
+    let month = String(yesterday.getMonth() + 1).padStart(2, '0')
+    let day = String(yesterday.getDate()-1).padStart(2, '0')
+    let date = year+'-'+month+'-'+day
+    
+    const showRoster = roster.map(player => { 
         return <MyPlayer reference={player} key={player.id} removeFromTeam={removeFromTeam}/>
     })
 
-    function editTeam(){
-        dispatch(selectTeam(team))
-    }
+    useEffect(() => {
+        fetch(`http://localhost:3000/team/${team.id}`)
+        .then(r => r.json())
+        .then(rosterData => setRoster(rosterData[0].contracts))
+        .catch(error => error)
+    }, [team.id])
+
+    useEffect(() => {
+        contracts.forEach(player => { 
+            fetch(`https://www.balldontlie.io/api/v1/stats?dates[]=${date}&player_ids[]=${player.player_id}`)
+                .then(r => r.json())
+                .then(data =>  {
+                    fetch(`http://localhost:3000/contract/${player.player_id}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', },
+                        body: JSON.stringify({ points: data.data[0].pts })
+                    })
+                    .then(r => r.json())
+                    .catch(error => error)
+                })
+                .catch(error => error)
+      })
+      calculatePoints()
+    }, [contracts, date])
 
     function deleteTeam(){
         fetch(`http://localhost:3000/team/${team.id}`, {
@@ -32,32 +62,44 @@ export default function TeamCard({ team, contracts, myTeams, setMyTeams }) {
     function addToTeam(){
         dispatch(selectTeam(team))
         setFinder(!finder)
+        if (finder) {
+            window.location.reload()
+        }
     }
 
     function removeFromTeam(player){
+        dispatch(removePlayer(player))
         dispatch(selectTeam(team))
         fetch(`http://localhost:3000/team/${team.id}/${player.id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
         })
         .then(r => r.json())
-        .then(player => dispatch(removePlayer(player)))
+        .then(window.location.reload())
+    }
+    
+    function calculatePoints(){
+        fetch(`http://localhost:3000/team/${team.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify({ points: 10 })
+        })
+        .then(r => r.json())
+        .then(data => setPoints(data.points))
+        .catch(error => error)
     }
 
     return (
         <div>
-            <Card style={{ height: '18rem', width: '18rem', flex: "1" }}>
-            <Card.Body>
-                <Card.Title>{team.team_name} </Card.Title>
-                <Card.Title style={{align: 'right', color: 'green'}}> FUNDS: ${team.salary} </Card.Title>
+            <Card style={{ height: 'auto', width: '18rem', flex: "1", backgroundColor: "black" }}>
+            <Card.Body style={{ backgroundColor: "#4B85FF", color: "white" }}>
+                <Card.Title> <h4> {team.team_name} </h4> </Card.Title>
+                <Card.Title> TEAM POINTS: {points} </Card.Title>
                 <Card.Text>
-                    {displayRoster}
-                    <Button onClick={addToTeam}> + </Button>
+                    {showRoster}
                 </Card.Text>
-                    <NavLink exact to={`/team/${team.id}/view`}>
-                        <Button onClick={editTeam}> Edit Team </Button>
-                    </NavLink>
-                        <Button variant="danger" onClick={() => setConfirmation(!confirmation)}> Delete Team </Button>
+                    <Button variant="success" onClick={addToTeam}> Add a new player </Button>
+                    <Button variant="danger" onClick={() => setConfirmation(!confirmation)}> Delete team </Button>
             </Card.Body>
             </Card>
 
@@ -74,9 +116,9 @@ export default function TeamCard({ team, contracts, myTeams, setMyTeams }) {
         <Modal show={finder} backdrop="static">
             <Modal.Title> <center> Search for a player </center> </Modal.Title>
                 <Modal.Body>
-                    <Search/>
+                    <Button variant="secondary" onClick={() => setFinder(!finder)}> Close </Button>
+                    <Search roster={roster} setRoster={setRoster}/>
                 </Modal.Body>
-            <Modal.Footer> <Button variant="secondary" onClick={() => setFinder(!finder)}>Close</Button> </Modal.Footer>
         </Modal>
         </div>
     )

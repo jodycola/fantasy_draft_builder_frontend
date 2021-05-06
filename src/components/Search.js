@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Player from './Player'
+import { Button } from 'react-bootstrap'
 
-function Search() {
+function Search(roster, setRoster) {
     const [search, setSearch] = useState("")
     const [playerSearch, setPlayerSearch] = useState([])
 
@@ -9,9 +10,8 @@ function Search() {
     
     const timeout = useRef(null)
 
-
     const searchedPlayers = playerSearch.map((player) => {
-        return <Player key={player.id} player={player}/>
+        return <Player key={player.id} player={player} roster={roster} setRoster={setRoster}/>
     })
 
     function handleFilterChange(e){
@@ -39,6 +39,7 @@ function Search() {
             timeout.current = null;
             search !== '' ? searchingPlayers() : setPlayerSearch([]);
         }, 1000)
+        // eslint-disable-next-line
     }, [search, filter])
 
     function handleFilter(e){
@@ -54,7 +55,6 @@ function Search() {
             <label> Search for player </label>
             <form>
                 <input type="text" value={search} placeholder="Find a player" onChange={(e) => setSearch(e.target.value)}/>
-                <input type="submit"/>
             </form>
     </div>
 
@@ -62,6 +62,7 @@ function Search() {
         <label> Search by team </label><br/>
         <form onSubmit={handleFilter}>
         <select name="teams" size="5" defaultValue={filter} onChange={handleFilterChange}>
+            <option value="All">---Any Team---</option>
             <option value="Atlanta Hawks">Atlanta Hawks</option>
             <option value="Boston Celtics">Boston Celtics</option>
             <option value="Brooklyn Nets">Brooklyn Nets</option>
@@ -93,11 +94,10 @@ function Search() {
             <option value="Utah Jazz">Utah Jazz</option>
             <option value="Washington Wizards">Washington Wizards</option>
         </select>
-        <input type="submit"/>
         </form>
     </div>
     
-    <button onClick={clearSearch}>Clear Search</button>
+    <Button variant="secondary" onClick={clearSearch}>Clear Search</Button> {"  "}
     <div className="players-container">        
         {searchedPlayers}
     </div>

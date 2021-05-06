@@ -90,9 +90,9 @@ export default function Profile() {
 
     return (
     <div className="profile-edit">
-            <h1> Edit Profile </h1>
-                <p> Name: {currentUser.name} </p>
-                <p> Email: {currentUser.email} </p>
+            <h1 style={{color: "white"}}> Edit Profile </h1>
+                <p style={{color: "white"}}> Name: {currentUser.name} </p>
+                <p style={{color: "white"}}> Email: {currentUser.email} </p>
             <Button onClick={() => setShowNameForm(!showNameForm)}>Change Name</Button>
             <Button onClick={() => setShowEmailForm(!showEmailForm)}>Change Email</Button>
             <Button onClick={() => setShowPasswordForm(!showPasswordForm)}>Change Password</Button>
